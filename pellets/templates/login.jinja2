@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <!-- Font & Icon -->
+  <link rel="stylesheet" href="{{request.static_url('pellets:static/font/inter/inter.min.css')}}">
+  <link rel="stylesheet" href="{{request.static_url('pellets:static/plugins/material-design-icons-iconfont/material-design-icons.min.css')}}">
+  <!-- Plugins -->
+  <!-- CSS plugins goes here -->
+  <!-- Main Style -->
+  <link rel="stylesheet" href="{{request.static_url('pellets:static/plugins/simplebar/simplebar.min.css')}}">
+  <link rel="stylesheet" href="{{request.static_url('pellets:static/css/style.min.css')}}" id="main-css">
+  <link rel="stylesheet" href="{{request.static_url('pellets:static/css/sidebar-blue.min.css')}}" id="theme-css"> <!-- options: blue,cyan,dark,gray,green,pink,purple,red,royal,ash,crimson,namn,frost -->
+  <title>Wood Pellet for You | Login</title>
+</head>
+
+<body class="login-page">
+
+  <div class="container mt-5">
+    <div class="row">
+      <div class="col-lg-7 col-xl-8 d-none d-lg-block">
+        <img src="{{request.static_url('pellets:static/img/auth.svg')}}" alt="" class="img-fluid w-100">
+      </div>
+      <div class="col-lg-5 col-xl-4 d-flex justify-content-center align-items-start">
+        <div class="card mb-3">
+          <div class="card-body p-4">
+            <h3>Log In</h3>
+            <p class="font-weight-light text-secondary">Welcome! Please login to continue.</p>
+            <hr>
+			<p>{{message}}</p>
+			{{form.render()|safe}}
+              <div class="small mt-4">
+                Don't have an account ?
+                <a href="/signup" class="text-decoration-underline">Register</a>
+              </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Plugins -->
+  <!-- JS plugins goes here -->
+
+</body>
+
+</html>
+
+
+

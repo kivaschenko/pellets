@@ -1,0 +1,17 @@
+      {% include '../content/_form-elements.twig' %}
+
+<script>
+  var plugins = [
+    '{{ folder.plugins }}autosize/autosize.min.js',
+    '{{ folder.dist }}js/autocomplete.min.js',
+    '{{ folder.plugins }}duallistbox/duallistbox.min.css',
+    '{{ folder.plugins }}duallistbox/duallistbox.min.js',
+    '{{ folder.plugins }}star-rating/star-rating.min.css',
+    '{{ folder.plugins }}star-rating/star-rating.min.js',
+    '{{ folder.plugins }}slugify/slugify.min.js',
+  ]
+  App.loadPlugins(plugins, null).then(() => {
+    {% include '../content/_form-elements.js' %}
+
+  }).then(() => App.stopLoading())
+</script>

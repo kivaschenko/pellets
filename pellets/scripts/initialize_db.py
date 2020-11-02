@@ -5,15 +5,28 @@ from pyramid.paster import bootstrap, setup_logging
 from sqlalchemy.exc import OperationalError
 
 from .. import models
-
+from .seed_data import GOODS
 
 def setup_models(dbsession):
     """
     Add or update models / fixtures in the database.
 
     """
-    model = models.mymodel.MyModel(name='one', value=1)
-    dbsession.add(model)
+    # insert data into goods table
+    for item in GOODS:
+        model = models.offer.Goods(name=item[0], body=item[1])
+        dbsession.add(model)
+
+    # create couple users: 'teodor' and 'civa'
+    teodor = models.user.User(nickname='teodor', email='teodorathome@yahoo.com',
+           role='editor')
+    teodor.set_password('Teodorathome11')
+    dbsession.add(teodor)
+
+    civa = models.User(nickname='civa', email='civaschenko@yahoo.com',
+         role='base')
+    civa.set_password('Ki150797')
+    dbsession.add(civa)
 
 
 def parse_args(argv):
