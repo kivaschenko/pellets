@@ -23,20 +23,19 @@ class Offer(Base):
 	amount = Column(Integer)
 	price = Column(Integer)
 	incoterms = Column(String(5), nullable=False)
-	calorific = Column(Numeric)
-	ash = Column(Numeric)
-	humidity = Column(Numeric)
-	sulfur = Column(Numeric)
-	description = Column(Text)
+	body = Column(Text)
 	creation_date = Column(DateTime)
 	due_date = Column(Date)
 	active = Boolean(create_constraint=True)
 	user_id = Column(Integer, ForeignKey('user.id'))
-	point_id = Column(Integer, ForeignKey(column='point.id'), nullable=False)
+	# modified
+	lat = Column(Numeric)
+	lng = Column(Numeric)
+	address = Column(Text)
 
 	def __repr__(self):
-		return f'<Offer(offer_id={self.offer_id} name={self.name} - price={self.price})>'
-	
+		return f'<Offer(offer_id={self.offer_id} {self.type_offer} - price={self.price})>'
+
 	def __init__(self, *args, **kwargs):
 		"""On constraction, set date of creation """
 		super().__init__(*args, **kwargs)
@@ -53,4 +52,3 @@ class Goods(Base):
 
 	def __repr__(self):
 		return f'<Goods(id={self.id} - name={self.name})>'
-

@@ -5,7 +5,6 @@ import zope.sqlalchemy
 
 # import or define all models here to ensure they are attached to the
 # Base.metadata prior to any initialization routines
-from .point import Point  # flake8: noqa
 from .offer import Offer, Goods # flake8: noqa
 from .user import User # flake8: noqa
 

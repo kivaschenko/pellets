@@ -23,7 +23,9 @@ requires = [
     # new
     'psycopg2',
     'bcrypt',
-    'deform'
+    'deform',
+    # for extract address from coordinates
+    'geopy'
 ]
 
 tests_require = [

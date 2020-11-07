@@ -12,11 +12,19 @@
   <link rel="stylesheet" href="{{request.static_url('pellets:static/plugins/datatables/dataTables.bootstrap4.min.css')}}">
   <link rel="stylesheet" href="{{request.static_url('pellets:static/plugins/datatables/responsive.bootstrap4.min.css')}}">
   <!-- CSS plugins goes here -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+   integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
+   crossorigin=""/>
+   <!-- Make sure you put this AFTER Leaflet's CSS -->
+   <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
+     integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
+     crossorigin=""></script>
   <!-- Main Style -->
   <link rel="stylesheet" href="{{request.static_url('pellets:static/plugins/simplebar/simplebar.min.css')}}">
   <link rel="stylesheet" href="{{request.static_url('pellets:static/css/style.min.css')}}" id="main-css">
   <link rel="stylesheet" href="{{request.static_url('pellets:static/css/font-family-roboto.min.css')}}" id="font-family-css">
   <link rel="stylesheet" href="{{request.static_url('pellets:static/css/sidebar-red.min.css')}}" id="theme-css"> <!-- options: blue,cyan,dark,gray,green,pink,purple,red,royal,ash,crimson,namn,frost -->
+  <link rel="stylesheet" href="{{request.static_url('pellets:static/theme.css')}}">
   <title>Wood pellets for you</title>
 </head>
 
@@ -45,10 +53,10 @@
           <a class="nav-link has-icon dropdown-toggle" href="#"><i data-feather="lock"></i>Authentication</a>
           <ul>
             {% if request.user %}
-            <li><a href="#" class="active">Hello, {{ request.user.nickname }}!</a></li>
-            <li><a href="/logout">Logout</a></li>
+            <li><a href="#" class="active"><i data-feather="user"></i> {{ request.user.nickname }}!</a></li>
+            <li><a href="/logout"><i data-feather="log-out"></i>Logout</a></li>
             {% else %}
-            <li><a href="/login" class="active">Login</a></li>
+            <li><a href="/login" class="active"><i data-feather="log-in"></i>Login</a></li>
             <li><a href="/signup">Register</a></li>
             <li><a href="/forgot-password">Forgot Password</a></li>
             {% endif %}
@@ -57,16 +65,31 @@
         <li class="nav-item">
           <a class="nav-link has-icon dropdown-toggle" href="#"><i data-feather="map"></i>Maps</a>
           <ul>
-            <li><a href="/points-at-map" class="active">Points at map</a></li>
-            <li><a href="/offers-at-map">Offers at map</a></li>
+            <li><a href="/map"><i data-feather="map-pin"></i>Offers at map</a></li>
           </ul>
         </li>
         <li class="nav-item">
           <a class="nav-link has-icon dropdown-toggle active show" href="#"><i class="material-icons">table_chart</i>Tables</a>
           <ul>
-            <li><a href="/table-points" class="active">Table of points</a></li>
-            <li><a href="/table-offers">Table of offers</a></li>
-            <li><a href="/table-goods">Table of goods</a></li>
+            <li><a href="/offers"><i data-feather="dollar-sign"></i>Table of offers</a></li>
+            <li><a href="/table-goods"><i data-feather="shopping-bag"></i>Table of goods</a></li>
+          </ul>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link has-icon dropdown-toggle active show" href="#"><i data-feather="check-square"></i>Forms creating</a>
+          <ul>
+            <li><a href="/offer/create" class="active">Create offer</a></li>
+            <li><a href="/table-goods">Create goods</a></li>
+          </ul>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link has-icon dropdown-toggle" href="#"><i data-feather="users"></i>User</a>
+          <ul>
+            <li><a href="/user-profile">User Profile</a></li>
+            <li><a href="/user-list">User List</a></li>
+            <li><a href="
+              user-grid">User Grid</a></li>
+            <li><a href="/user-profile-setting">Profile Settings</a></li>
           </ul>
         </li>
       </ul>

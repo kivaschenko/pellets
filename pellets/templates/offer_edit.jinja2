@@ -1,0 +1,63 @@
+{% extends 'starter.jinja2' %}
+{% block breadcrumb %}
+<!-- Breadcrumb -->
+<nav aria-label="breadcrumb" class="main-breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="/home">Home</a></li>
+    <li class="breadcrumb-item active" aria-current="page">Create offer</li>
+  </ol>
+</nav>
+<!-- /Breadcrumb -->
+{% endblock breadcrumb %}
+{% block content %}
+<div class="card  col-sm-6">
+  <h6>Add a delivery point</h6>
+  <div id="mapid"></div>
+  <div class="card-body" id="form">
+    <div class="form-group">
+      {{ form.render()|safe }}
+    </div>
+  </div>
+</div>
+
+<script>
+  var options = {
+  enableHighAccuracy: true,
+  timeout: 5000,
+  maximumAge: 0
+};
+
+function showMap(position) {
+  let latInput = document.getElementById("deformField2")
+  let lngInput = document.getElementById("deformField3")
+  let lat = position.coords.latitude;
+  let lng = position.coords.longitude;
+  let mymap = L.map('mapid').setView([lat, lng], 11);
+  L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
+  		maxZoom: 18,
+  		attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, ' +
+  			'<a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
+  			'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+  		id: 'mapbox/streets-v11',
+  		tileSize: 512,
+  		zoomOffset: -1
+  }).addTo(mymap);
+  let marker;
+
+  mymap.on("click", function(e){
+    if (marker) { // check marker exists
+      mymap.removeLayer(marker); // remove
+    }
+    marker = new L.Marker([e.latlng.lat, e.latlng.lng]).addTo(mymap); // set new
+    lngInput.value = e.latlng.lng
+    latInput.value = e.latlng.lat
+  })
+}
+
+function error(err) {
+  console.warn(`ERROR(${err.code}): ${err.message}`);
+}
+
+navigator.geolocation.getCurrentPosition(showMap, error, options);
+</script>
+{% endblock %}
