@@ -1,6 +1,6 @@
 from pyramid.authentication import AuthTktAuthenticationPolicy
 from pyramid.authorization import ACLAuthorizationPolicy
-from pyramid.security import Allow, Everyone, Authenticated 
+
 from .models import User
 
 class MyAuthenticationPolicy(AuthTktAuthenticationPolicy):
@@ -15,15 +15,6 @@ def get_user(request):
     if user_id is not None:
         user = request.dbsession.query(User).get(user_id)
         return user
-
-
-class OfferRecordFactory(object):
-    __acl__ = [(Allow, Everyone, 'view'),
-                (Allow, Authenticated, 'create'),
-                (Allow, Authenticated, 'edit'), ]
-
-    def __init__(self, request):
-        pass
 
 
 def includeme(config):

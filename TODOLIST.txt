@@ -1,0 +1,8 @@
+TO DO:
+
+- modify form for send message from offer-detail page by adding rich text window
+- map with markers of all offers
+- filters to map by goods, country, etc.
+- security: autorization, authentication
+- remake table offers to first variant
+- 

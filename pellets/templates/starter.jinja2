@@ -12,18 +12,14 @@
   <link rel="stylesheet" href="{{request.static_url('pellets:static/plugins/datatables/dataTables.bootstrap4.min.css')}}">
   <link rel="stylesheet" href="{{request.static_url('pellets:static/plugins/datatables/responsive.bootstrap4.min.css')}}">
   <!-- CSS plugins goes here -->
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
-   integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
-   crossorigin=""/>
-   <!-- Make sure you put this AFTER Leaflet's CSS -->
-   <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
-     integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
-     crossorigin=""></script>
+  <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v1.12.0/mapbox-gl.js'></script>
+  <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v1.12.0/mapbox-gl.css' rel='stylesheet' />
   <!-- Main Style -->
   <link rel="stylesheet" href="{{request.static_url('pellets:static/plugins/simplebar/simplebar.min.css')}}">
   <link rel="stylesheet" href="{{request.static_url('pellets:static/css/style.min.css')}}" id="main-css">
   <link rel="stylesheet" href="{{request.static_url('pellets:static/css/font-family-roboto.min.css')}}" id="font-family-css">
-  <link rel="stylesheet" href="{{request.static_url('pellets:static/css/sidebar-red.min.css')}}" id="theme-css"> <!-- options: blue,cyan,dark,gray,green,pink,purple,red,royal,ash,crimson,namn,frost -->
+  <link rel="stylesheet" href="{{request.static_url('pellets:static/css/sidebar-blue.min.css')}}" id="theme-css">
+  <!-- options: blue,cyan,dark,gray,green,pink,purple,red,royal,ash,crimson,namn,frost -->
   <link rel="stylesheet" href="{{request.static_url('pellets:static/theme.css')}}">
   <title>Wood pellets for you</title>
 </head>
@@ -78,7 +74,7 @@
         <li class="nav-item">
           <a class="nav-link has-icon dropdown-toggle active show" href="#"><i data-feather="check-square"></i>Forms creating</a>
           <ul>
-            <li><a href="/offer/create" class="active">Create offer</a></li>
+            <li><a href="/create_offer" class="active">Create offer</a></li>
             <li><a href="/table-goods">Create goods</a></li>
           </ul>
         </li>
@@ -122,16 +118,14 @@
       <!-- Breadcrumb -->
       <nav aria-label="breadcrumb" class="main-breadcrumb">
         <ol class="breadcrumb">
-          <li class="breadcrumb-item"><a href="/home">Home</a></li>
-          <li class="breadcrumb-item"><a href="javascript:void(0)">UI Elements</a></li>
-          <li class="breadcrumb-item active" aria-current="page">Breadcrumb</li>
+          <li class="breadcrumb-item active" aria-current="page">Home</li>
         </ol>
       </nav>
       <!-- /Breadcrumb -->
       {% endblock breadcrumb %}
 
       {% block content %}
-      your content here
+
       {% endblock content %}
 
     </div>
@@ -172,11 +166,47 @@
   <script src="{{request.static_url('pellets:static/plugins/simplebar/simplebar.min.js')}}"></script>
   <script src="{{request.static_url('pellets:static/plugins/feather-icons/feather.min.js')}}"></script>
   <script src="{{request.static_url('pellets:static/js/script.min.js')}}"></script>
-  <script src="{{request.static_url('pellets:static/js/settings.min.js')}}"></script>
 
   <!-- Plugins -->
+  <script src="{{request.static_url('pellets:static/plugins/datatables/jquery.datatables.bootstrap4.responsive.min.js')}}"></script>
   <!-- JS plugins goes here -->
-
+  <script>
+    $(() => {
+      App.checkAll()
+      // Run datatable
+      var table = $('#example').DataTable({
+        drawCallback: function() {
+          $('.dataTables_paginate > .pagination').addClass('pagination-sm') // make pagination small
+        }
+      })
+      // Apply column filter
+      $('#example .dt-column-filter th').each(function(i) {
+        $('input', this).on('keyup change', function() {
+          if (table.column(i).search() !== this.value) {
+            table
+              .column(i)
+              .search(this.value)
+              .draw()
+          }
+        })
+      })
+      // Toggle Column filter function
+      var responsiveFilter = function(table, index, val) {
+        var th = $(table).find('.dt-column-filter th').eq(index)
+        val === true ? th.removeClass('d-none') : th.addClass('d-none')
+      }
+      // Run Toggle Column filter at first
+      $.each(table.columns().responsiveHidden(), function(index, val) {
+        responsiveFilter('#example', index, val)
+      })
+      // Run Toggle Column filter on responsive-resize event
+      table.on('responsive-resize', function(e, datatable, columns) {
+        $.each(columns, function(index, val) {
+          responsiveFilter('#example', index, val)
+        })
+      })
+    })
+  </script>
 </body>
 
 </html>

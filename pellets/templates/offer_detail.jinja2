@@ -1,0 +1,177 @@
+{% extends 'starter.jinja2'%}
+
+{% block breadcrumb %}
+<!-- Breadcrumb -->
+<nav aria-label="breadcrumb" class="main-breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="/">Home</a></li>
+    <li class="breadcrumb-item"><a href="/offers">Offers</a></li>
+    <li class="breadcrumb-item active" aria-current="page">Offer #{{offer['id']}}</li>
+  </ol>
+</nav>
+<!-- /Breadcrumb -->
+{% endblock %}
+
+{% block content %}
+<div class="row">
+  <div class="col-sm-4">
+    <h3>{{title_offer}} - {{offer['amount']}} ton(s) by ${{offer['price']}} per ton</h3>
+    <div class="table-responsive">
+      <table class="table table-primary" id="table-color">
+        <thead>
+          <tr>
+            <th scope="col">Parameter</th>
+            <th scope="col">Value</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th scope="row">Type</th>
+            <td>{{offer['type_offer']}}</td>
+          </tr>
+          <tr>
+            <th scope="row">Goods</th>
+            <td> {{offer['goods']}}</td>
+          </tr>
+          <tr>
+            <th scope="row">Price</th>
+            <td>{{offer['price']}}</td>
+          </tr>
+          <tr>
+            <th scope="row">Amount</th>
+            <td>{{offer['amount']}}</td>
+          </tr>
+          <tr>
+            <th scope="row">Country</th>
+            <td>{{offer['country']}}</td>
+          </tr>
+          <tr>
+            <th scope="row">Delivery terms</th>
+            <td> {{offer['incoterms']}} ({{offer['address']}})</td>
+          <tr>
+          <tr>
+            <th scope="row">Diameter</th>
+            <td>{{offer['diameter']}} mm</td>
+          </tr>
+          <tr>
+            <th scope="row">Length</th>
+            <td>{{offer['length_min']}} - {{offer['length_max']}} mm</td>
+          </tr>
+          <tr>
+            <th scope="row">Bulk density</th>
+            <td>{{offer['Net calorific value']}} MJ/m3</td>
+          </tr>
+          <tr>
+            <th scope="row">Moisture content</th>
+            <td>less than {{offer['moisture_content']}}%</td>
+          </tr>
+          <tr>
+            <th scope="row">Fines (less 3.15mm)</th>
+            <td>less than {{offer['fines']}}%</td>
+          </tr>
+          <tr>
+            <th scope="row">Mechanical durability</th>
+            <td>more than {{offer['mechanical_durability']}}%</td>
+          </tr>
+          <tr>
+            <th scope="row">Ash content</th>
+            <td>less than {{offer['ash_content']}}%</td>
+          </tr>
+          <tr>
+            <th scope="row">Ash melting temperature</th>
+            <td>more than {{offer['ash_melting_temp']}} K</td>
+          </tr>
+          <tr>
+            <th scope="row">Details</th>
+            <td>{{offer['body']}}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="accordion accordion-flush" id="accordion-flush">
+      <div class="card">
+        <div class="card-header">
+          <button class="btn dropdown-toggle collapsed" type="button" data-toggle="collapse" data-target="#accordion-flush-1" aria-expanded="true">
+            owner of the offer
+          </button>
+        </div>
+        <div id="accordion-flush-1" class="collapse show" data-parent="#accordion-flush">
+          <div class="card-body text-secondary font-size-sm pt-0">
+            {{owner_offer['nickname']}}
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-header">
+          <button class="btn dropdown-toggle collapsed" type="button" data-toggle="collapse" data-target="#accordion-flush-3" aria-expanded="false">
+            Send message to the offer's owner
+          </button>
+        </div>
+        <div id="accordion-flush-3" class="collapse" data-parent="#accordion-flush">
+          <div class="card-body text-secondary font-size-sm pt-0">
+            <p>{{message}}</p>
+            {{form.render()|safe}}
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card-footer text-muted font-size-sm"><i class="material-icons mr-1">access_time</i>
+       {{offer['creation_date'].strftime('%Y-%m-%d')}} is actually to
+       {{offer['due_date'].strftime('%Y-%m-%d')}} #{{offer['id']}}
+    </div>
+  </div>
+  <div class="col-sm-6">
+    <div id='map'></div>
+  </div>
+</div>
+  <script>
+  mapboxgl.accessToken = 'pk.eyJ1Ijoia2l2YXNjaGVua28iLCJhIjoiY2s5MDVoM3lhMG9wajNkbDZ4MXcxamloeSJ9.VyJqearkDcrWR_2t9En7Og'; // replace this with your access token
+  var latitude = '{{offer['lat']}}';
+  var longitude = '{{offer['lng']}}';
+  var map = new mapboxgl.Map({
+    container: 'map',
+    style: 'mapbox://styles/kivaschenko/ckhc76knv0dh719m3kngv5z2b', // replace this with your style URL
+    center: [longitude, latitude],
+    zoom: 8.7
+  });
+  map.on("load", function () {
+    /* Image: An image is loaded and added to the map. */
+    map.loadImage("https://i.imgur.com/MK4NUzI.png", function(error, image) {
+        if (error) throw error;
+        map.addImage("custom-marker", image);
+        /* Style layer: A style layer ties together the source and image and specifies how they are displayed on the map. */
+        map.addLayer({
+          id: "markers",
+          type: "symbol",
+          /* Source: A data source specifies the geographic coordinate where the image marker gets placed. */
+          source: {
+            type: "geojson",
+            data: {
+              type: 'FeatureCollection',
+              features: [
+                {
+                  type: 'Feature',
+                  properties: {},
+                  geometry: {
+                    type: "Point",
+                    coordinates: [longitude, latitude]
+                  }
+                }
+              ]
+            }
+          },
+          layout: {
+            "icon-image": "custom-marker",
+          }
+        });
+      });
+  });
+  const title = '{{title_offer}} - {{offer['amount']}} ton(s) by ${{offer['price']}} per ton'
+  const address = '{{offer['address']}}'
+  var popup = new mapboxgl.Popup({ offset: [0, -15] })
+  .setLngLat([longitude, latitude])
+  .setHTML('<h6>' + title + '</h6><p>' + address + '</p>')
+  .addTo(map);
+  // code from the next step will go here
+  </script>
+{% endblock content %}

@@ -5,15 +5,13 @@ def includeme(config):
     # goods
     config.add_route('goods', '/table-goods')
     config.add_route('goods_detail', '/goods/{goods_id}')
-    config.add_route('create_goods', '/create-goods')
-    config.add_route('edit_goods', '/goods/{foods_id}/edit')
+    config.add_route('goods_action', '/goods/{action}')
     # authentication
     config.add_route('login', '/login')
     config.add_route('logout', '/logout')
     config.add_route('signup', '/signup')
     # offers
-    config.add_route('view_offer', '/{offer_id}')
+    config.add_route('view_offer', '/offer/{offer_id}')
     config.add_route('offers_at_map', '/map')
     config.add_route('offers', '/offers')
-    config.add_route('offer_action', '/offer/{action}',
-                     factory='pellets.security.OfferRecordFactory')
+    config.add_route('create_offer', '/create_offer')

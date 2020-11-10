@@ -1,4 +1,6 @@
-#mapid {
-  height: 400px;
-  margin: 10, 10, 10, 10;
+#map {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 100%;
 }

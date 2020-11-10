@@ -23,8 +23,7 @@ class LoginSchema(colander.MappingSchema):
             validator=colander.Length(min=5, max=100),
             widget=deform.widget.PasswordWidget(redisplay=True))
 schema = LoginSchema()
-button = deform.form.Button(name='submit', title='Додати пропозицію',
-        type='submit')
+button = deform.form.Button(name='submit', type='submit')
 
 
 @view_config(renderer='../templates/login.jinja2', route_name='login')
