@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import date
 from sqlalchemy import (
 	Column,
 	Integer,
@@ -24,7 +24,7 @@ class Offer(Base):
 	price = Column(Integer, nullable=False)
 	incoterms = Column(String(5), nullable=False)
 	body = Column(Text)
-	creation_date = Column(DateTime)
+	creation_date = Column(Date)
 	due_date = Column(Date)
 	active = Boolean(create_constraint=True)
 	user_id = Column(Integer, ForeignKey('user.id'))
@@ -60,7 +60,7 @@ ${self.price} - {self.amount} ton)>'
 	def __init__(self, *args, **kwargs):
 		"""On constraction, set date of creation """
 		super().__init__(*args, **kwargs)
-		self.creation_date = datetime.now()
+		self.creation_date = date.today()
 
 
 class Goods(Base):

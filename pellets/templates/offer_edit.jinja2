@@ -1,18 +1,43 @@
 {% extends 'starter.jinja2' %}
+
+
+
 {% block breadcrumb %}
 <!-- Breadcrumb -->
 <nav aria-label="breadcrumb" class="main-breadcrumb">
   <ol class="breadcrumb">
-    <li class="breadcrumb-item"><a href="/home">Home</a></li>
+    <li class="breadcrumb-item"><a href="/">Home</a></li>
     <li class="breadcrumb-item active" aria-current="page">Create offer</li>
   </ol>
 </nav>
 <!-- /Breadcrumb -->
 {% endblock breadcrumb %}
+
 {% block content %}
-<div class="card  col-sm-6">
-  <h6>Add a delivery point</h6>
-  <div id="mapid"></div>
+<h3>Form to add offer</h3>
+<p>Add a delivery point at map before by mouses click</p>
+<div class="row">
+<div class="col-sm-7">
+  <div id='map' style='position: absolute; top: 0; bottom: 0; width: 100%;'></div>
+  <style>
+    .coordinates {
+  background: rgba(0, 0, 0, 0.5);
+  color: #fff;
+  position: relative;
+  top: 10px;
+  left: 10px;
+  padding: 5px 10px;
+  margin: 0;
+  font-size: 11px;
+  line-height: 18px;
+  border-radius: 3px;
+  display: none;
+  }
+  </style>
+  <pre id="coordinates" class="coordinates"></pre>
+</div>
+
+<div class="card  col-sm-4">
   <div class="card-body" id="form">
     <div class="form-group">
       <p><span class="text-danger">{{message}}</span></p>
@@ -20,45 +45,60 @@
     </div>
   </div>
 </div>
-
+</div>
 <script>
-  var options = {
-  enableHighAccuracy: true,
-  timeout: 5000,
-  maximumAge: 0
-};
+let latInput = document.getElementById("deformField2")
+let lngInput = document.getElementById("deformField3")
 
-function showMap(position) {
-  let latInput = document.getElementById("deformField2")
-  let lngInput = document.getElementById("deformField3")
-  let lat = position.coords.latitude;
-  let lng = position.coords.longitude;
-  let mymap = L.map('mapid').setView([lat, lng], 11);
-  L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
-  		maxZoom: 18,
-  		attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, ' +
-  			'<a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
-  			'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
-  		id: 'mapbox/streets-v11',
-  		tileSize: 512,
-  		zoomOffset: -1
-  }).addTo(mymap);
-  let marker;
+let longitude;
+let latitude;
 
-  mymap.on("click", function(e){
-    if (marker) { // check marker exists
-      mymap.removeLayer(marker); // remove
+mapboxgl.accessToken = 'pk.eyJ1Ijoia2l2YXNjaGVua28iLCJhIjoiY2s5MDVoM3lhMG9wajNkbDZ4MXcxamloeSJ9.VyJqearkDcrWR_2t9En7Og';
+        var coordinates = document.getElementById('coordinates');
+        var map = new mapboxgl.Map({
+        container: 'map',
+        style: 'mapbox://styles/kivaschenko/ckhc76knv0dh719m3kngv5z2b',
+        center: [31.02, 49.55],
+        zoom: 4
+    });
+
+    // Add zoom and rotation controls to the map
+    map.addControl(new mapboxgl.NavigationControl());
+
+    // assigne empty marker
+    let marker;
+    // Set up an event listener on the map.
+    map.on('click', function(e) {
+        // The event object (e) contains information like the
+        // coordinates of the point on the map that was clicked.
+        console.log('A click event has occurred at ' + e.lngLat);
+        longitude = e.lngLat.toArray()[0]
+        latitude = e.lngLat.toArray()[1]
+        latInput.value = latitude;
+        lngInput.value = longitude;
+        if (marker){
+            marker.remove();
+            coordinates.innerHTML = "Longitude: no data <br />Latitude: no data";
+        }
+        // Add marker by certain coordinates
+        marker = new mapboxgl.Marker({
+            draggable: true
+        })
+        .setLngLat(e.lngLat.toArray())
+        .addTo(map);
+        coordinates.style.display = 'block';
+        coordinates.innerHTML =
+        'Longitude: ' + e.lngLat.lng + '<br />Latitude: ' + e.lngLat.lat;
+
+        function onDragEnd() {
+        var lngLat = marker.getLngLat();
+        coordinates.style.display = 'block';
+        coordinates.innerHTML =
+        'Longitude: ' + lngLat.lng + '<br />Latitude: ' + lngLat.lat;
+        latInput.value = latitude;
+        lngInput.value = longitude;
     }
-    marker = new L.Marker([e.latlng.lat, e.latlng.lng]).addTo(mymap); // set new
-    lngInput.value = e.latlng.lng
-    latInput.value = e.latlng.lat
-  })
-}
-
-function error(err) {
-  console.warn(`ERROR(${err.code}): ${err.message}`);
-}
-
-navigator.geolocation.getCurrentPosition(showMap, error, options);
+    marker.on('dragend', onDragEnd);
+  });
 </script>
 {% endblock %}

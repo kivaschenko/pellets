@@ -3,6 +3,9 @@ TO DO:
 - modify form for send message from offer-detail page by adding rich text window
 - map with markers of all offers
 - filters to map by goods, country, etc.
-- security: autorization, authentication
+- security: authorization, authentication
 - remake table offers to first variant
-- 
+- add remote git repository to store source
+- add image to offer (BLOB Field to database)
+
+- complete view offers 

@@ -49,7 +49,7 @@
           <a class="nav-link has-icon dropdown-toggle" href="#"><i data-feather="lock"></i>Authentication</a>
           <ul>
             {% if request.user %}
-            <li><a href="#" class="active"><i data-feather="user"></i> {{ request.user.nickname }}!</a></li>
+            <li><a href="#" class="active"><i data-feather="user"></i>Hello, {{ request.user.nickname }}!</a></li>
             <li><a href="/logout"><i data-feather="log-out"></i>Logout</a></li>
             {% else %}
             <li><a href="/login" class="active"><i data-feather="log-in"></i>Login</a></li>

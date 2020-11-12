@@ -17,9 +17,9 @@ from pyramid.httpexceptions import (
     HTTPNotFound
 )
 from pyramid.csrf import check_csrf_token, get_csrf_token
-
 from geopy.geocoders import Nominatim
 from .. import models
+from pellets.models import Offer, User
 
 # define log
 log = logging.getLogger(__name__)
@@ -232,7 +232,7 @@ def create_offer(request):
                 ash_melting_temp=appstruct['ash_melting_temp']
             )
             request.dbsession.add(offer)
-            next_url = request.route_url('home')
+            next_url = request.route_url('offers')
             return HTTPFound(location=next_url)
         except deform.exception.ValidationFailure as e:
             return dict(
@@ -247,9 +247,18 @@ def create_offer(request):
 
 @view_config(route_name='offers', renderer='../templates/offers.jinja2')
 def offers(request):
-    query = request.dbsession.query(models.Offer).all()
-    offers = [q.__dict__ for q in query]
-    return dict(offers=offers)
+    query = request.dbsession.query(
+                                Offer.id,
+                                Offer.creation_date,
+                                Offer.type_offer,
+                                Offer.goods,
+                                Offer.amount,
+                                Offer.price,
+                                Offer.country,
+                                Offer.due_date,
+                                User.nickname).\
+            filter(Offer.user_id==models.User.id).all()
+    return dict(offers=query)
 
 @view_config(route_name='view_offer',
              renderer='../templates/offer_detail.jinja2')

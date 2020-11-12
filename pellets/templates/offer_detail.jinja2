@@ -125,53 +125,20 @@
   </div>
 </div>
   <script>
-  mapboxgl.accessToken = 'pk.eyJ1Ijoia2l2YXNjaGVua28iLCJhIjoiY2s5MDVoM3lhMG9wajNkbDZ4MXcxamloeSJ9.VyJqearkDcrWR_2t9En7Og'; // replace this with your access token
-  var latitude = '{{offer['lat']}}';
-  var longitude = '{{offer['lng']}}';
-  var map = new mapboxgl.Map({
+    var latitude = '{{offer['lat']}}';
+    var longitude = '{{offer['lng']}}';
+    mapboxgl.accessToken = 'pk.eyJ1Ijoia2l2YXNjaGVua28iLCJhIjoiY2s5MDVoM3lhMG9wajNkbDZ4MXcxamloeSJ9.VyJqearkDcrWR_2t9En7Og';
+    var map = new mapboxgl.Map({
     container: 'map',
-    style: 'mapbox://styles/kivaschenko/ckhc76knv0dh719m3kngv5z2b', // replace this with your style URL
+    style: 'mapbox://styles/kivaschenko/ckhc76knv0dh719m3kngv5z2b',
     center: [longitude, latitude],
-    zoom: 8.7
-  });
-  map.on("load", function () {
-    /* Image: An image is loaded and added to the map. */
-    map.loadImage("https://i.imgur.com/MK4NUzI.png", function(error, image) {
-        if (error) throw error;
-        map.addImage("custom-marker", image);
-        /* Style layer: A style layer ties together the source and image and specifies how they are displayed on the map. */
-        map.addLayer({
-          id: "markers",
-          type: "symbol",
-          /* Source: A data source specifies the geographic coordinate where the image marker gets placed. */
-          source: {
-            type: "geojson",
-            data: {
-              type: 'FeatureCollection',
-              features: [
-                {
-                  type: 'Feature',
-                  properties: {},
-                  geometry: {
-                    type: "Point",
-                    coordinates: [longitude, latitude]
-                  }
-                }
-              ]
-            }
-          },
-          layout: {
-            "icon-image": "custom-marker",
-          }
-        });
-      });
-  });
-  const title = '{{title_offer}} - {{offer['amount']}} ton(s) by ${{offer['price']}} per ton'
-  const address = '{{offer['address']}}'
-  var popup = new mapboxgl.Popup({ offset: [0, -15] })
-  .setLngLat([longitude, latitude])
-  .setHTML('<h6>' + title + '</h6><p>' + address + '</p>')
-  .addTo(map);
-  // code from the next step will go here
+    zoom: 6
+    });
+    // Add zoom and rotation controls to the map
+    map.addControl(new mapboxgl.NavigationControl());
+    // Add marker by certain coordinates
+    var marker = new mapboxgl.Marker()
+    .setLngLat([longitude, latitude])
+    .addTo(map);
   </script>
 {% endblock content %}

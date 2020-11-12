@@ -11,91 +11,45 @@
 {% endblock breadcrumb %}
 
 {% block content %}
-<h5 class="mt-5">DataTables</h5>
-<p class="text-secondary font-size-sm">
-  DataTables is a plug-in for the jQuery Javascript library. It is a highly flexible tool, built upon the foundations of progressive enhancement, that adds all of these advanced features to any HTML table.
-</p>
+<h5 class="mt-5">Offers Table</h5>
 <div class="card">
   <div class="card-body">
-    <table id="example" class="table table-striped table-bordered table-sm dt-responsive nowrape w-100">
+    <table id="example" class="table table-striped table-bordered table-sm dt-responsive nowrap w-100">
       <!-- Filter columns -->
-      <thead>
-        <tr class="column-filter dt-column-filter">
-          <th></th>
-          <th><input type="text" class="form-control form-control-sm" placeholder="Country"></th>
-          <th><input type="text" class="form-control form-control-sm" placeholder="type"></th>
-          <th><input type="text" class="form-control form-control-sm" placeholder="goods"></th>
-          <th><input type="text" class="form-control form-control-sm" placeholder="amount"></th>
-          <th><input type="text" class="form-control form-control-sm" placeholder="price"></th>
-          <th><input type="text" class="form-control form-control-sm" placeholder="due date"></th>
-          <th><input type="text" class="form-control form-control-sm" placeholder="diameter"></th>
-          <th><input type="text" class="form-control form-control-sm" placeholder="min length"></th>
-          <th><input type="text" class="form-control form-control-sm" placeholder="max length"></th>
-          <th><input type="text" class="form-control form-control-sm" placeholder="bulk"></th>
-          <th><input type="text" class="form-control form-control-sm" placeholder="calorific"></th>
-          <th><input type="text" class="form-control form-control-sm" placeholder="moisture"></th>
-          <th><input type="text" class="form-control form-control-sm" placeholder="fines"></th>
-          <th><input type="text" class="form-control form-control-sm" placeholder="durability"></th>
-          <th><input type="text" class="form-control form-control-sm" placeholder="ash content"></th>
-          <th><input type="text" class="form-control form-control-sm" placeholder="ash melting"></th>
-        </tr>
+      <thead class="thead-primary">
         <tr>
-          <th>Details</th>
-          <th>Country</th>
+          <th>ID</th>
+          <th>Date</th>
           <th>Type</th>
           <th>Goods</th>
-          <th>Amount, ton</th>
-          <th>Price</th>
+          <th>Amount, t</th>
+          <th>Price, $</th>
+          <th>Country</th>
           <th>Due date</th>
-          <th>Diameter, mm</th>
-          <th>Min Length, mm</th>
-          <th>Max Length, mm</th>
-          <th>Bulk density, kg/m3</th>
-          <th>Net calorific value, MJ/kg</th>
-          <th>Moisture content, maximum</th>
-          <th>Fines (less 3.15 mm), maximum</th>
-          <th>Mechanical durability, minimum</th>
-          <th>Ash content, maximum</th>
-          <th>Ash melting temperature, minimum</th>
-          <th>Incoterms</th>
-          <th>Address</th>
+          <th>User</th>
         </tr>
       </thead>
-      <!-- /Filter columns -->
-      {% if offers %}
+    {% if offers %}
       <tbody>
-        {% for offer in offers %}
+      {% for offer in offers %}
         <tr>
-          <td></td>
-          <td>{{offer['country']}}</td>
-          <td>{{offer['type_offer']}}</td>
-          <td>{{offer['goods']}}</td>
-          <td class="font-number">{{offer['amount']}}</td>
-          <td class="font-number">${{offer['price']}}</td>
-          <td class="font-number">{{offer['due_date']}}</td>
-          <td class="font-number">{{offer['diameter']}}</td>
-          <td class="font-number">{{offer['length_min']}}</td>
-          <td class="font-number">{{offer['length_max']}}</td>
-          <td class="font-number">{{offer['bulk_density']}}</td>
-          <td class="font-number">{{offer['net_calorific_value']}}</td>
-          <td class="font-number">{{offer['moisture_content']}}%</td>
-          <td class="font-number">{{offer['fines']}}%</td>
-          <td class="font-number">{{offer['mechanical_durability']}}%</td>
-          <td class="font-number">{{offer['ash_content']}}%</td>
-          <td class="font-number">{{offer['ash_melting_temp']}} K</td>
-          <td>{{offer['incoterms']}}</td>
-          <td>{{offer['address']}}</td>
-
+          <td>{{offer[0]}}</td>
+          <td>{{offer[1]}}</td>
+          <td>{{offer[2]}}</td>
+          <td>{{offer[3]}}</td>
+          <td>{{offer[4]}}</td>
+          <td>{{offer[5]}}</td>
+          <td>{{offer[6]}}</td>
+          <td>{{offer[7]}}</td>
+          <td>{{offer[8]}}</td>
         </tr>
         {% endfor %}
-      </tbody>
-      {% else %}
-      <p>No offers yet</p>
-      {% endif %}
-    </table>
+        </tbody>
+    {% else %}
+    <tr>No offers</tr>
+    {% endif %}
+    </table><!-- /.table -->
   </div>
 </div>
-
-
 
 {% endblock %}
