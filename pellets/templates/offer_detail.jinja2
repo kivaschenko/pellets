@@ -102,16 +102,9 @@
         </div>
       </div>
       <div class="card">
-        <div class="card-header">
-          <button class="btn dropdown-toggle collapsed" type="button" data-toggle="collapse" data-target="#accordion-flush-3" aria-expanded="false">
-            Send message to the offer's owner
-          </button>
-        </div>
-        <div id="accordion-flush-3" class="collapse" data-parent="#accordion-flush">
-          <div class="card-body text-secondary font-size-sm pt-0">
-            <p>{{message}}</p>
-            {{form.render()|safe}}
-          </div>
+        <div class="card-body text-secondary font-size-sm pt-0">
+          <p>{{message}}</p>
+          {{form.render()|safe}}
         </div>
       </div>
     </div>
@@ -130,7 +123,8 @@
     mapboxgl.accessToken = 'pk.eyJ1Ijoia2l2YXNjaGVua28iLCJhIjoiY2s5MDVoM3lhMG9wajNkbDZ4MXcxamloeSJ9.VyJqearkDcrWR_2t9En7Og';
     var map = new mapboxgl.Map({
     container: 'map',
-    style: 'mapbox://styles/kivaschenko/ckhc76knv0dh719m3kngv5z2b',
+    style: 'mapbox://styles/mapbox/streets-v11',
+    
     center: [longitude, latitude],
     zoom: 6
     });

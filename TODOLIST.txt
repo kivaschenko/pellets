@@ -4,8 +4,14 @@ TO DO:
 - map with markers of all offers
 - filters to map by goods, country, etc.
 - security: authorization, authentication
-- remake table offers to first variant
++ remake table offers to first variant
 - add remote git repository to store source
 - add image to offer (BLOB Field to database)
 
-- complete view offers 
++ complete view offers 
+- search by database
+- translate package
+
+- learn documentation Mapbox GL JS
+- add GeoJson datasets
+- add possibility to do directions and count distance
