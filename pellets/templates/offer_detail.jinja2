@@ -13,84 +13,91 @@
 {% endblock %}
 
 {% block content %}
+<style>
+	body { margin: 0; padding: 0; }
+	#map { position: absolute; top: 0; bottom: 0; width: 100%; }
+</style>
 <div class="row">
-  <div class="col-sm-4">
-    <h3>{{title_offer}} - {{offer['amount']}} ton(s) by ${{offer['price']}} per ton</h3>
-    <div class="table-responsive">
-      <table class="table table-primary" id="table-color">
-        <thead>
-          <tr>
-            <th scope="col">Parameter</th>
-            <th scope="col">Value</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <th scope="row">Type</th>
-            <td>{{offer['type_offer']}}</td>
-          </tr>
-          <tr>
-            <th scope="row">Goods</th>
-            <td> {{offer['goods']}}</td>
-          </tr>
-          <tr>
-            <th scope="row">Price</th>
-            <td>{{offer['price']}}</td>
-          </tr>
-          <tr>
-            <th scope="row">Amount</th>
-            <td>{{offer['amount']}}</td>
-          </tr>
-          <tr>
-            <th scope="row">Country</th>
-            <td>{{offer['country']}}</td>
-          </tr>
-          <tr>
-            <th scope="row">Delivery terms</th>
-            <td> {{offer['incoterms']}} ({{offer['address']}})</td>
-          <tr>
-          <tr>
-            <th scope="row">Diameter</th>
-            <td>{{offer['diameter']}} mm</td>
-          </tr>
-          <tr>
-            <th scope="row">Length</th>
-            <td>{{offer['length_min']}} - {{offer['length_max']}} mm</td>
-          </tr>
-          <tr>
-            <th scope="row">Bulk density</th>
-            <td>{{offer['Net calorific value']}} MJ/m3</td>
-          </tr>
-          <tr>
-            <th scope="row">Moisture content</th>
-            <td>less than {{offer['moisture_content']}}%</td>
-          </tr>
-          <tr>
-            <th scope="row">Fines (less 3.15mm)</th>
-            <td>less than {{offer['fines']}}%</td>
-          </tr>
-          <tr>
-            <th scope="row">Mechanical durability</th>
-            <td>more than {{offer['mechanical_durability']}}%</td>
-          </tr>
-          <tr>
-            <th scope="row">Ash content</th>
-            <td>less than {{offer['ash_content']}}%</td>
-          </tr>
-          <tr>
-            <th scope="row">Ash melting temperature</th>
-            <td>more than {{offer['ash_melting_temp']}} K</td>
-          </tr>
-          <tr>
-            <th scope="row">Details</th>
-            <td>{{offer['body']}}</td>
-          </tr>
-        </tbody>
-      </table>
+  <div class="card col-sm-4">
+    <div class="card-body">
+      <h3>{{title_offer}} - {{offer['amount']}} ton(s) by ${{offer['price']}} per ton</h3>
+      <div class="table-responsive">
+        <table class="table table-primary" id="table-color">
+          <thead>
+            <tr>
+              <th scope="col">Parameter</th>
+              <th scope="col">Value</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th scope="row">Type</th>
+              <td>{{offer['type_offer']}}</td>
+            </tr>
+            <tr>
+              <th scope="row">Goods</th>
+              <td> {{offer['goods']}}</td>
+            </tr>
+            <tr>
+              <th scope="row">Price</th>
+              <td>{{offer['price']}}</td>
+            </tr>
+            <tr>
+              <th scope="row">Amount</th>
+              <td>{{offer['amount']}}</td>
+            </tr>
+            <tr>
+              <th scope="row">Country</th>
+              <td>{{offer['country']}}</td>
+            </tr>
+            <tr>
+              <th scope="row">Delivery terms</th>
+              <td> {{offer['incoterms']}}</td>
+            <tr>
+            <tr>
+              <th scope="row">Diameter</th>
+              <td>{{offer['diameter']}} mm</td>
+            </tr>
+            <tr>
+              <th scope="row">Length</th>
+              <td>{{offer['length_min']}} - {{offer['length_max']}} mm</td>
+            </tr>
+            <tr>
+              <th scope="row">Bulk density</th>
+              <td>{{offer['Net calorific value']}} MJ/m3</td>
+            </tr>
+            <tr>
+              <th scope="row">Moisture content</th>
+              <td>less than {{offer['moisture_content']}}%</td>
+            </tr>
+            <tr>
+              <th scope="row">Fines (less 3.15mm)</th>
+              <td>less than {{offer['fines']}}%</td>
+            </tr>
+            <tr>
+              <th scope="row">Mechanical durability</th>
+              <td>more than {{offer['mechanical_durability']}}%</td>
+            </tr>
+            <tr>
+              <th scope="row">Ash content</th>
+              <td>less than {{offer['ash_content']}}%</td>
+            </tr>
+            <tr>
+              <th scope="row">Ash melting temperature</th>
+              <td>more than {{offer['ash_melting_temp']}} K</td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="card-body">
+          <h6>Details</h6>
+          <p><span class="text-secondary">{{offer['body']}}</span></p>
+        </div>
+      </div>
     </div>
     <div class="accordion accordion-flush" id="accordion-flush">
       <div class="card">
         <div class="card-header">
+
           <button class="btn dropdown-toggle collapsed" type="button" data-toggle="collapse" data-target="#accordion-flush-1" aria-expanded="true">
             owner of the offer
           </button>
@@ -103,6 +110,7 @@
       </div>
       <div class="card">
         <div class="card-body text-secondary font-size-sm pt-0">
+          <h6>Send message to the user</h6>
           <p>{{message}}</p>
           {{form.render()|safe}}
         </div>
@@ -113,26 +121,31 @@
        {{offer['due_date'].strftime('%Y-%m-%d')}} #{{offer['id']}}
     </div>
   </div>
-  <div class="col-sm-6">
-    <div id='map'></div>
+  <div class="card col-sm-6">
+    <div id='map' class="map-details"></div>
   </div>
 </div>
+
   <script>
     var latitude = '{{offer['lat']}}';
     var longitude = '{{offer['lng']}}';
     mapboxgl.accessToken = 'pk.eyJ1Ijoia2l2YXNjaGVua28iLCJhIjoiY2s5MDVoM3lhMG9wajNkbDZ4MXcxamloeSJ9.VyJqearkDcrWR_2t9En7Og';
     var map = new mapboxgl.Map({
     container: 'map',
-    style: 'mapbox://styles/mapbox/streets-v11',
-    
+    style: 'mapbox://styles/kivaschenko/ckhc76knv0dh719m3kngv5z2b',
     center: [longitude, latitude],
-    zoom: 6
+    zoom: 10.7
     });
     // Add zoom and rotation controls to the map
     map.addControl(new mapboxgl.NavigationControl());
+    // create the popup
+    var popup = new mapboxgl.Popup({ offset: 25 }).setText(
+    '{{ offer['address'] }}'
+    );
     // Add marker by certain coordinates
     var marker = new mapboxgl.Marker()
-    .setLngLat([longitude, latitude])
-    .addTo(map);
+      .setLngLat([longitude, latitude])
+      .setPopup(popup) // sets a popup on this marker
+      .addTo(map);
   </script>
 {% endblock content %}

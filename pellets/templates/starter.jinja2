@@ -5,7 +5,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <!-- Font & Icon -->
-  <!-- <link rel="stylesheet" href="{{request.static_url('pellets:static/font/roboto/roboto.min.css')}}"> -->
+  <!-- <link rel="stylesheet" href="{{request.static_url('pellets:static/font/inter/inter.min.css')}}"> -->
   <link rel="stylesheet" href="{{request.static_url('pellets:static/plugins/material-design-icons-iconfont/material-design-icons.min.css')}}">
   <link rel="stylesheet" href="{{request.static_url('pellets:static/plugins/fontawesome-free/css/all.min.css')}}">
   <!-- Plugins -->
@@ -17,7 +17,6 @@
   <!-- Main Style -->
   <link rel="stylesheet" href="{{request.static_url('pellets:static/plugins/simplebar/simplebar.min.css')}}">
   <link rel="stylesheet" href="{{request.static_url('pellets:static/css/style.min.css')}}" id="main-css">
-  <!-- <link rel="stylesheet" href="{{request.static_url('pellets:static/css/font-family-roboto.min.css')}}" id="font-family-css"> -->
   <link rel="stylesheet" href="{{request.static_url('pellets:static/css/sidebar-blue.min.css')}}" id="theme-css">
   <!-- options: blue,cyan,dark,gray,green,pink,purple,red,royal,ash,crimson,namn,frost -->
   <link rel="stylesheet" href="{{request.static_url('pellets:static/theme.css')}}">
@@ -50,16 +49,16 @@
           <ul>
             {% if request.user %}
             <li><a href="#" class="active"><i data-feather="user"></i>Hello, {{ request.user.nickname }}!</a></li>
-            <li><a href="/logout"><i data-feather="log-out"></i>Logout</a></li>
+            <li><a href="{{ request.route_url('logout') }}"><i data-feather="log-out"></i>Logout</a></li>
             {% else %}
-            <li><a href="/login" class="active"><i data-feather="log-in"></i>Login</a></li>
-            <li><a href="/signup">Register</a></li>
+            <li><a href="{{ request.route_url('login') }}" class="active"><i data-feather="log-in"></i>Login</a></li>
+            <li><a href="{{ request.route_url('signup') }}">Register</a></li>
             <li><a href="/forgot-password">Forgot Password</a></li>
             {% endif %}
           </ul>
         </li>
         <li class="nav-item">
-          <a class="nav-link has-icon dropdown-toggle" href="#"><i data-feather="map"></i>Maps</a>
+          <a class="nav-link has-icon dropdown-toggle" href="request.route_url('map')"><i data-feather="map"></i>Maps</a>
           <ul>
             <li><a href="/map"><i data-feather="map-pin"></i>Offers at map</a></li>
           </ul>
@@ -68,14 +67,14 @@
           <a class="nav-link has-icon dropdown-toggle active show" href="#"><i class="material-icons">table_chart</i>Tables</a>
           <ul>
             <li><a href="/offers"><i data-feather="dollar-sign"></i>Table of offers</a></li>
-            <li><a href="/table-goods"><i data-feather="shopping-bag"></i>Table of goods</a></li>
+            <li><a href="{{request.route_url('goods')}}"><i data-feather="shopping-bag"></i>Table of goods</a></li>
           </ul>
         </li>
         <li class="nav-item">
           <a class="nav-link has-icon dropdown-toggle active show" href="#"><i data-feather="check-square"></i>Forms creating</a>
           <ul>
-            <li><a href="/create_offer" class="active">Create offer</a></li>
-            <li><a href="/table-goods">Create goods</a></li>
+            <li><a href="{{request.route_url('offer_action', action='create')}}" class="active">Create offer</a></li>
+            <li><a href="{{request.route_url('goods_action', action='create')}}">Create goods</a></li>
           </ul>
         </li>
         <li class="nav-item">

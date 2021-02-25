@@ -1,3 +1,4 @@
+
 from pyramid.httpexceptions import HTTPFound
 from deform.exception import ValidationFailure
 from pyramid.view import (
@@ -13,23 +14,32 @@ import deform
 
 from ..models import User
 
-class LoginSchema(colander.MappingSchema):
-    username = colander.SchemaNode(
-            colander.String(),
-            validator=colander.Length(max=100),
-            widget=deform.widget.TextInputWidget())
-    password = colander.SchemaNode(
-            colander.String(),
-            validator=colander.Length(min=5, max=100),
-            widget=deform.widget.PasswordWidget(redisplay=True))
-schema = LoginSchema()
-button = deform.form.Button(name='submit', type='submit')
-
 
 @view_config(renderer='../templates/login.jinja2', route_name='login')
 def login(request):
-    message = ''
     next_url = request.route_url('home')
+    message = ''
+    csrf_token = request.session.get_csrf_token()
+    def validate_csrf(node, value):
+        if value != csrf_token:
+            raise ValueError("Bad CSRF token")
+    class CSRFSchema(colander.Schema):
+        csrf = colander.SchemaNode(
+            colander.String(),
+            default=csrf_token,
+            validator=validate_csrf,
+            widget=deform.widget.HiddenWidget()
+    )   
+    class LoginSchema(CSRFSchema):
+        username = colander.SchemaNode(
+                colander.String(),
+                validator=colander.Length(max=100),
+                widget=deform.widget.TextInputWidget())
+        password = colander.SchemaNode(
+                colander.String(),
+                validator=colander.Length(min=5, max=100),
+                widget=deform.widget.PasswordWidget(redisplay=True))
+    schema = LoginSchema()
     form = deform.Form(schema, buttons=('submit',))
     if 'submit' in request.POST:
         controls = request.POST.items()
@@ -43,6 +53,7 @@ def login(request):
                 headers = remember(request, user.id)
                 return HTTPFound(location=next_url, headers=headers)
             else:
+                headers = forget(request)
                 message = 'Failed login or password!'
         except ValidationFailure as e:
             return dict(
@@ -51,7 +62,7 @@ def login(request):
             )
     return dict(
         form=form,
-        message=message
+        message=message,
         )
 
 
@@ -72,7 +83,18 @@ def forbidden_view(request):
 def signup(request):
     next_url = request.route_url('home')
     message = ''
-    class SignupSchema(colander.MappingSchema):
+    csrf_token = request.session.get_csrf_token()
+    def validate_csrf(node, value):
+        if value != csrf_token:
+            raise ValueError("Bad CSRF token")
+    class CSRFSchema(colander.Schema):
+        csrf = colander.SchemaNode(
+            colander.String(),
+            default=csrf_token,
+            validator=validate_csrf,
+            widget=deform.widget.HiddenWidget()
+    )
+    class SignupSchema(CSRFSchema):
         username = colander.SchemaNode(
             colander.String(),
             validator=colander.Length(max=100),
@@ -80,7 +102,7 @@ def signup(request):
         )
         email = colander.SchemaNode(
             colander.String(),
-            validator=colander.Email(msg="Введіть дійсний email"),
+            validator=colander.Email(msg="This email looks as wrong."),
         )
         password = colander.SchemaNode(
             colander.String(),
@@ -89,7 +111,7 @@ def signup(request):
             description="Type your password and confirm it",
         )
     schema = SignupSchema()
-    button = deform.form.Button(name='submit', title='Реєстрація',type='submit')
+    button = deform.form.Button(name='submit', title='Register',type='submit')
     form = deform.Form(schema, buttons=('submit',))
     if 'submit' in request.POST:
         controls = request.POST.items()
@@ -115,7 +137,7 @@ def signup(request):
                     headers = remember(request, user.id)
                     return HTTPFound(location=next_url, headers=headers)
             else:
-                message = 'Такий користувач або емайл вже зареєстрований'
+                message = 'Already exists such username or email!'
         except ValidationFailure as e:
             return dict(
                 form=e,

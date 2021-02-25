@@ -1,51 +1,28 @@
 {% extends 'starter.jinja2' %}
-
-
-
 {% block breadcrumb %}
 <!-- Breadcrumb -->
 <nav aria-label="breadcrumb" class="main-breadcrumb">
-  <ol class="breadcrumb">
-    <li class="breadcrumb-item"><a href="/">Home</a></li>
-    <li class="breadcrumb-item active" aria-current="page">Create offer</li>
-  </ol>
+<ol class="breadcrumb">
+<li class="breadcrumb-item"><a href="/">Home</a></li>
+<li class="breadcrumb-item active" aria-current="page">Create offer</li>
+</ol>
 </nav>
 <!-- /Breadcrumb -->
 {% endblock breadcrumb %}
-
 {% block content %}
-<h3>Form to add offer</h3>
-<p>Add a delivery point at map before by mouses click</p>
 <div class="row">
-<div class="col-sm-7">
-  <div id='map' style='position: absolute; top: 10; bottom: 0; width: 90%; height: 30%;'></div>
-  <style>
-.coordinates {
-    background: #2b5799;
-    color: #fff;
-    position: relative;
-    top: 10px;
-    left: 10px;
-    padding: 5px 10px;
-    margin: 0;
-    font-size: 11px;
-    line-height: 18px;
-    border-radius: 3px;
-    width: fit-content;
-}
-  </style>
-  <pre id="coordinates" class="coordinates"></pre>
-</div>
-
-<div class="card  col-sm-4">
-  <div class="card-body" id="form">
-    <div class="form-group">
-      <p><span class="text-danger">{{message}}</span></p>
-      {{ form.render()|safe }}
-    </div>
+  <div class="col-sm-3">
+    <p><span class="text-danger">{{message}}</span></p>
+    {{ form.render()|safe }}
+  </div>
+  <div class="col-sm-6">
+    <h3>Form to add offer</h3>
+    <p>Add a delivery point at map before by mouses click</p>
+    <div id='map' class="map-form"></div>
+    <pre id="coordinates" class="coordinates"></pre>
   </div>
 </div>
-</div>
+
 <script>
 let latInput = document.getElementById("deformField2")
 let lngInput = document.getElementById("deformField3")

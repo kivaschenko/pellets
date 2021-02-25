@@ -1,7 +1,24 @@
+from pyramid.security import Allow, Everyone, Authenticated 
 from pyramid.authentication import AuthTktAuthenticationPolicy
 from pyramid.authorization import ACLAuthorizationPolicy
-
 from .models import User
+
+
+class OfferFactory(object):
+    __acl__ = [(Allow, Everyone, 'view'),
+                (Allow, Authenticated, 'create'),
+                (Allow, Authenticated, 'edit'), 
+                (Allow, Authenticated, 'map'),
+    ]
+    def __init__(self, request):
+        pass
+
+class GoodsFactory(object):
+    __acl__ = [(Allow, 'teodor', ('create', 'edit')), ] 
+
+    def __init__ (self, request):
+        pass
+
 
 class MyAuthenticationPolicy(AuthTktAuthenticationPolicy):
     def authenticated_userid(self, request):
@@ -23,6 +40,7 @@ def includeme(config):
         settings['auth.secret'],
         hashalg='sha512',
     )
+    
     config.set_authentication_policy(auth_policy)
     config.set_authorization_policy(ACLAuthorizationPolicy())
     config.add_request_method(get_user, 'user', reify=True)

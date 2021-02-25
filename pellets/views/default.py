@@ -1,6 +1,5 @@
 # built-in imports
 import logging
-import secrets
 import decimal
 from datetime import datetime, date, timedelta
 
@@ -23,6 +22,7 @@ from pellets.models import Offer, User
 
 # define log
 log = logging.getLogger(__name__)
+
 # define parameters for geolocator
 geolocator = Nominatim(timeout=7, user_agent='offer')
 
@@ -47,8 +47,9 @@ try it again.
 """
 
 
-@view_config(route_name='create_offer',
-             renderer='pellets:templates/offer_edit.jinja2')
+@view_config(route_name='offer_action', permission='create',
+             renderer='pellets:templates/offer_edit.jinja2',
+             match_param='action=create')
 def create_offer(request):
     user = request.user
     message = ''
@@ -248,17 +249,29 @@ def create_offer(request):
 @view_config(route_name='offers', renderer='../templates/offers.jinja2')
 def offers(request):
     query = request.dbsession.query(
-                                Offer.id,
-                                Offer.creation_date,
-                                Offer.type_offer,
-                                Offer.goods,
-                                Offer.amount,
-                                Offer.price,
-                                Offer.country,
-                                Offer.due_date,
-                                User.nickname).\
-            filter(Offer.user_id==models.User.id).all()
+          Offer.id,
+          Offer.creation_date,
+          Offer.type_offer,
+          Offer.goods,
+          Offer.amount,
+          Offer.price,
+          Offer.country,
+          Offer.due_date,
+          User.nickname).filter(Offer.user_id==models.User.id).all()
     return dict(offers=query)
+
+
+@view_config(route_name='map', renderer='../templates/map.jinja2')
+def map(request):
+    query = request.dbsession.query(
+          Offer.id,
+          Offer.type_offer,
+          Offer.goods,
+          Offer.amount,
+          Offer.price,
+          Offer.country,
+          Offer.lng,
+          Offer.lat).all()
 
 @view_config(route_name='view_offer',
              renderer='../templates/offer_detail.jinja2')
@@ -286,7 +299,10 @@ def view_offer(request):
         text = colander.SchemaNode(
             colander.String(),
             validator=colander.Length(max=255),
-            widget=deform.widget.TextInputWidget()
+            widget=deform.widget.RichTextWidget(
+                options=(("browser_spellcheck", True),)
+            ),
+            description="Enter some text",
         )
     schema = MySchema().bind(request=request)
     form = deform.Form(schema, buttons=("submit",))
